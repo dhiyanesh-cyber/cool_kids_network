@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build; rsync -a dist ../backend/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

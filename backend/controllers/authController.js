@@ -5,6 +5,7 @@ import generateCharacter from '../utils/generateCharacter.js';
 export const signup = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log(email);
 
     // Check if user already exists
     let existingUser = await User.findOne({ email });
