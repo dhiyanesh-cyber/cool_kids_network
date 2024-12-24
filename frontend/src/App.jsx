@@ -1,7 +1,7 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import { FaHome, FaUser, FaUsers, FaSignInAlt, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaUsers, FaSignInAlt, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
@@ -36,11 +36,11 @@ function App() {
   return (
     <NextUIProvider className='dark'>
       <Router>
-        <div className="min-h-screen bg-dark-bg text-dark-text flex flex-col">
-          <nav className="bg-dark-card text-white p-4 shadow-md border-b border-dark-border">
+        <div className="min-h-screen bg-dark-bg bg-opacity-90 text-dark-text flex flex-col">
+          <nav className="sticky top-0 z-50 bg-dark-card bg-opacity-70 backdrop-blur-lg text-white p-4 shadow-md border-b border-dark-border">
             <div className="container mx-auto flex justify-between items-center">
-              <Link to="/" className="text-2xl font-bold flex items-center">
-                <FaHome className="mr-2" /> Cool Kids Network
+              <Link to="/" id='brand' className="text-2xl font-bold flex items-center">
+                Cool Kids Network
               </Link>
               <ul className="flex space-x-4 items-center">
                 {!user ? (
@@ -98,7 +98,7 @@ function App() {
               />
             </Routes>
           </div>
-          <footer className="bg-dark-card text-white p-4 text-center">
+          <footer className=" text-white p-4 text-center bg-dark-card bg-opacity-70 backdrop-blur-lg">
             <p>© 2024 Cool Kids Network. All rights reserved.</p>
           </footer>
         </div>

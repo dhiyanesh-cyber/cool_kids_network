@@ -1,8 +1,12 @@
 // src/components/UserList.js
 import React, { useState, useEffect } from 'react';
-import { FaUser, FaGlobe, FaEnvelope, FaTag } from 'react-icons/fa';
 import authService from '../services/authService';
 import userService from '../services/userService';
+import { AnimatePresence } from 'framer-motion';
+import { CanvasRevealEffect } from './ui/canvas-reveal-effect';
+import { CardSpotlight } from './ui/card-spotlight';
+import { CardSpotlightDemo } from './ui/userListCard';
+
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -34,8 +38,8 @@ const UserList = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6 text-center text-dark-text">
+    <div className="w-full container  px-4 py-8 ">
+      <h2 className="text-3xl font-normal mb-6 text-center text-dark-text">
         Cool Kids Network Users
       </h2>
       {error && (
@@ -43,38 +47,11 @@ const UserList = () => {
           {error}
         </p>
       )}
+
+
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {users.map((user, index) => (
-          <div
-            key={index}
-            className="bg-dark-card rounded-xl shadow-lg p-6 transform transition hover:scale-105"
-          >
-            <div className="flex items-center mb-4">
-              <div className="w-16 h-16 bg-dark-bg rounded-full flex items-center justify-center text-dark-text text-2xl mr-4">
-                {user.firstName[0].toUpperCase()}
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-dark-text">
-                  {user.firstName} {user.lastName}
-                </h3>
-                {currentUser.role === 'Coolest Kid' && (
-                  <p className="text-sm text-dark-text">{user.email}</p>
-                )}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <FaGlobe className="mr-2 text-dark-text" />
-                <span className="font-medium text-dark-text">{user.country}</span>
-              </div>
-              {currentUser.role === 'Coolest Kid' && (
-                <div className="flex items-center">
-                  <FaTag className="mr-2 text-dark-text" />
-                  <span className="font-medium text-dark-text">{user.role}</span>
-                </div>
-              )}
-            </div>
-          </div>
+          <CardSpotlightDemo user={user}/>
         ))}
       </div>
       {users.length === 0 && (
