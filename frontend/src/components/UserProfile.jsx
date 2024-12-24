@@ -40,7 +40,7 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center">
-      <Card className="w-full max-w-md">
+      <Card className="w-full p-6 max-w-md bg-opacity-80">
         <CardBody className="">
           <div className="text-center mb-6">
             <div className="mx-auto w-24 h-24 bg-dark-bg rounded-full flex items-center justify-center text-dark-text text-4xl mb-4">
