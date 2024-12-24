@@ -1,10 +1,8 @@
 // src/services/apiClient.js
 import axios from 'axios';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
-const API_URL = process.env.REACT_APP_API_URL;
+// Use REACT_APP_ prefix for environment variables in Create React App
+const API_URL = import.meta.env.VITE_API_URL;
 
 const apiClient = axios.create({
   baseURL: API_URL,
@@ -16,9 +14,13 @@ const apiClient = axios.create({
 // Request interceptor to add user email for authentication
 apiClient.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.email) {
-      config.headers['x-user-email'] = user.email;
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.email) {
+        config.headers['x-user-email'] = user.email;
+      }
+    } catch (error) {
+      console.error('Error parsing user from localStorage', error);
     }
     return config;
   },
