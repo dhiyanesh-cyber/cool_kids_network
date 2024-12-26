@@ -1,11 +1,11 @@
 // routes/adminRoutes.js
 import express from 'express';
-import { assignRole, generateToken } from '../controllers/adminController.js'
-import { adminAuthMiddleware } from '../middleware/adminAuthMiddleware.js';
+import { assignRole, createMaintainer } from '../controllers/adminController.js'
 
 const router = express.Router();
 
-router.put('/assign-role', adminAuthMiddleware, assignRole);
-router.post('/generate-token', generateToken);
+router.put('/assign-role', assignRole);
+router.post('/create-maintainer', createMaintainer);
+
 
 export default router;

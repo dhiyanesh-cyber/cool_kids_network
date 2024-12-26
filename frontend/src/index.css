@@ -5,8 +5,32 @@
 @tailwind utilities;
 
 html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
   background: #000000;
 }
+
+/* styles.css or a similar global stylesheet */
+.cooler-gradient-shadow {
+  box-shadow: 0 4px 6px -1px rgba(94, 0, 179, 0.5), 0 2px 4px -1px rgba(163, 0, 179, 0.5);
+}
+
+.coolest-gradient-shadow {
+  box-shadow: 0 4px 6px -1px rgba(230, 92, 0, 0.5), 0 2px 4px -1px rgba(249, 212, 35, 0.5);
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  background: #000000
+}
+
+
 
 body {
   @apply text-gray-900;

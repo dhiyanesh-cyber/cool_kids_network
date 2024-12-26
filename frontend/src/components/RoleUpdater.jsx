@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import apiClient from '../services/apiClient';
+import { Card, CardBody } from "@nextui-org/react";
 
 const RoleUpdater = () => {
   const [email, setEmail] = useState('');
@@ -8,13 +9,18 @@ const RoleUpdater = () => {
   const [role, setRole] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [useName, setUseName] = useState(false); // State to toggle between email and name
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation: Ensure at least email or first & last names are provided
-    if (!email && !(firstName && lastName)) {
-      setError('Please provide either an email or both first and last names.');
+    if (!useName && !email) {
+      setError('Please provide an email.');
+      return;
+    }
+
+    if (useName && !(firstName && lastName)) {
+      setError('Please provide both first and last names.');
       return;
     }
 
@@ -28,13 +34,12 @@ const RoleUpdater = () => {
 
     try {
       const payload = {
-        email: email || undefined, // Send only if provided
-        firstName: firstName || undefined,
-        lastName: lastName || undefined,
+        email: useName ? undefined : email,
+        firstName: useName ? firstName : undefined,
+        lastName: useName ? lastName : undefined,
         role,
       };
 
-      // Send a PUT request to the backend
       const response = await apiClient.put('/api/users/update-role', payload);
       setMessage(response.data.message || 'Role updated successfully!');
     } catch (err) {
@@ -43,61 +48,77 @@ const RoleUpdater = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-10">
-      <h2 className="text-2xl font-bold text-center text-cool-blue mb-4">Update User Role</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-2 font-medium">Email (optional)</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter user's email"
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cool-blue focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="block mb-2 font-medium">First Name (optional)</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="Enter first name"
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cool-blue focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="block mb-2 font-medium">Last Name (optional)</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Enter last name"
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cool-blue focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="block mb-2 font-medium">Role</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cool-blue focus:outline-none"
-          >
-            <option value="">Select a role</option>
-            <option value="Cool Kid">Cool Kid</option>
-            <option value="Cooler Kid">Cooler Kid</option>
-            <option value="Coolest Kid">Coolest Kid</option>
-          </select>
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-cool-blue text-white py-2 rounded-lg hover:bg-cool-blue-dark transition duration-300"
-        >
-          Update Role
-        </button>
-      </form>
-      {message && <p className="mt-4 text-green-500 text-center">{message}</p>}
-      {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
+    <div className='min-h-[calc(100vh-200px)] flex items-center justify-center'>
+      <Card className='w-[400px] px-6 py-3'>
+        <CardBody className=" ">
+          <h2 className="text-2xl font-bold text-center text-white mb-4">Update User Role</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {!useName ? (
+              <div>
+                <label className="block mb-2 font-medium text-white">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter user's email"
+                  className="w-full px-4 py-3 pl-5 border border-dark-border rounded-lg focus:outline-none focus:ring-1 focus:ring-dark-text bg-dark-bg text-dark-text "
+                />
+              </div>
+            ) : (
+              <>
+                <div>
+                  <label className="block mb-2 font-medium text-white">First Name</label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Enter first name"
+                    className="w-full px-4 py-3 pl-5 border border-dark-border rounded-lg focus:outline-none focus:ring-1 focus:ring-dark-text bg-dark-bg text-dark-text"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 font-medium text-white">Last Name</label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Enter last name"
+                    className="w-full px-4 py-3 pl-5 border border-dark-border rounded-lg focus:outline-none focus:ring-1 focus:ring-dark-text bg-dark-bg text-dark-text"
+                  />
+                </div>
+              </>
+            )}
+            <div>
+              <label className="block mb-2 font-medium text-white">Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full px-3 py-2 border border-dark-border rounded-lg bg-dark-input text-white focus:ring-2 focus:ring-cool-blue focus:outline-none"
+              >
+                <option value="">Select a role</option>
+                <option value="Cool Kid">Cool Kid</option>
+                <option value="Cooler Kid">Cooler Kid</option>
+                <option value="Coolest Kid">Coolest Kid</option>
+              </select>
+            </div>
+            <button
+              type="button"
+              onClick={() => setUseName(!useName)}
+              className="w-full  text-white py-2 rounded-lg"
+            >
+              {useName ? 'Identify by Email' : 'Identify by Name'}
+            </button>
+            <button
+              type="submit"
+              className="w-full bg-dark-text text-dark-bg py-3 rounded-lg hover:bg-dark-hover transition duration-300 flex items-center justify-center"
+            >
+              Update Role
+            </button>
+          </form>
+          {message && <p className="mt-4 text-green-500 text-center">{message}</p>}
+          {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
+        </CardBody>
+      </Card>
     </div>
   );
 };

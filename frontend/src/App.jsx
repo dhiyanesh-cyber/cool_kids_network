@@ -8,6 +8,7 @@ import UserProfile from './components/UserProfile';
 import UserList from './components/UserList';
 import authService from './services/authService';
 import { NextUIProvider } from "@nextui-org/react";
+import RoleUpdater from './components/RoleUpdater';
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login onLogin={() => setUser(authService.getCurrentUser())} />} />
               <Route path="/profile" element={user ? <UserProfile /> : <Navigate to="/login" />} />
+              <Route path='/update-role' element={<RoleUpdater />} />
               <Route
                 path="/users"
                 element={

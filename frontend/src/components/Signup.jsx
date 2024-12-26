@@ -41,7 +41,7 @@ const Signup = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="w-full px-4 py-3 pl-10 border border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-dark-text bg-dark-bg text-dark-text"
+                className="w-full px-4 py-3 pl-10 border border-dark-border rounded-lg focus:outline-none focus:ring-1 focus:ring-dark-text bg-dark-bg text-dark-text"
               />
               <FaEnvelope className="absolute left-3 top-4 text-dark-text" />
             </div>

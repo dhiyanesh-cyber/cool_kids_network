@@ -24,6 +24,9 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'golden-gradient': 'linear-gradient(135deg, #5e00b3 0%, #a300b3 100%)',
+      },
       colors: {
         'dark-bg': '#0a0a0a', // Very dark background
         'dark-card': '#121212', // Dark card color
