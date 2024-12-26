@@ -1,6 +1,6 @@
 // src/components/Signup.js
 import React, { useState } from 'react';
-import authService from '../services/authService';
+import authService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaCheckCircle } from 'react-icons/fa';
 import { Card, CardBody } from "@nextui-org/react";

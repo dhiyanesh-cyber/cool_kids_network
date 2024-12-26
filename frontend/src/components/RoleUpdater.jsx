@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiClient from '../services/apiClient';
 import { Card, CardBody } from "@nextui-org/react";
+import authService from '../services/authService'; // Assuming authService is used to get the current maintainer
 
 const RoleUpdater = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,16 @@ const RoleUpdater = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [useName, setUseName] = useState(false); // State to toggle between email and name
+  const [isAuthorized, setIsAuthorized] = useState(true);
+
+  useEffect(() => {
+    // Check if the user is a maintainer
+    const isMaintainer = authService.isMaintainer();
+    if (!isMaintainer) {
+      setIsAuthorized(false);
+      setError('Not authorized');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,24 +44,39 @@ const RoleUpdater = () => {
     setMessage('');
 
     try {
+      const maintainerId = authService.getCurrentUser()?.email; // Assuming the maintainer's email is stored in the current user
+
       const payload = {
-        email: useName ? undefined : email,
-        firstName: useName ? firstName : undefined,
-        lastName: useName ? lastName : undefined,
-        role,
+        maintainerId,
+        identifier: useName ? `${firstName} ${lastName}` : email,
+        identifierType: useName ? 'name' : 'email',
+        newRole: role,
       };
 
-      const response = await apiClient.put('/api/users/update-role', payload);
+      const response = await apiClient.put('/admin/assign-role', payload);
       setMessage(response.data.message || 'Role updated successfully!');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred while updating the role.');
     }
   };
 
+  if (!isAuthorized) {
+    return (
+      <div className='min-h-[calc(100vh-200px)] flex items-center justify-center'>
+        <Card className='w-[450px] px-6 py-3'>
+          <CardBody>
+            <h2 className="text-2xl font-bold text-center text-white mb-4">Not Authorized</h2>
+            <p className="text-center text-red-200 bg-red-800/70 p-2 rounded-lg">You do not have permission to access this page.</p>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className='min-h-[calc(100vh-200px)] flex items-center justify-center'>
       <Card className='w-[400px] px-6 py-3'>
-        <CardBody className=" ">
+        <CardBody>
           <h2 className="text-2xl font-bold text-center text-white mb-4">Update User Role</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {!useName ? (
@@ -61,7 +87,7 @@ const RoleUpdater = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter user's email"
-                  className="w-full px-4 py-3 pl-5 border border-dark-border rounded-lg focus:outline-none focus:ring-1 focus:ring-dark-text bg-dark-bg text-dark-text "
+                  className="w-full px-4 py-3 pl-5 border border-dark-border rounded-lg focus:outline-none focus:ring-1 focus:ring-dark-text bg-dark-bg text-dark-text"
                 />
               </div>
             ) : (
@@ -104,7 +130,7 @@ const RoleUpdater = () => {
             <button
               type="button"
               onClick={() => setUseName(!useName)}
-              className="w-full  text-white py-2 rounded-lg"
+              className="w-full text-white py-2 rounded-lg"
             >
               {useName ? 'Identify by Email' : 'Identify by Name'}
             </button>
@@ -115,8 +141,8 @@ const RoleUpdater = () => {
               Update Role
             </button>
           </form>
-          {message && <p className="mt-4 text-green-500 text-center">{message}</p>}
-          {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
+          {message && <p className="mt-4 text-green-200 text-center bg-green-800 p-2 rounded flex items-center justify-center">{message}</p>}
+          {error && <p className="mt-4 text-red-200 text-center bg-red-800 p-2 rounded">{error}</p>}
         </CardBody>
       </Card>
     </div>

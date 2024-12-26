@@ -1,10 +1,9 @@
 // src/components/Login.js
 import React, { useState } from 'react';
-import authService from '../services/authService';
+import authService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaSignInAlt } from 'react-icons/fa';
 import { Card, CardBody } from "@nextui-org/react";
-
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -19,7 +18,14 @@ const Login = ({ onLogin }) => {
       setLoading(true);
       await authService.login(email);
       onLogin(); // Update the App state with the logged-in user
-      navigate('/profile');
+
+      // Check if the user is a maintainer
+      const isMaintainer = authService.isMaintainer();
+      if (isMaintainer) {
+        navigate('/users'); // Redirect to UserList page if maintainer
+      } else {
+        navigate('/profile'); // Redirect to Profile page if regular user
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -68,7 +74,6 @@ const Login = ({ onLogin }) => {
           )}
         </CardBody>
       </Card>
-
     </div>
   );
 };

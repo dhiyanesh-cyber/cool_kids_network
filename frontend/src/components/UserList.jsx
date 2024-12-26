@@ -51,7 +51,7 @@ const UserList = () => {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {users.map((user, index) => (
-          <CardSpotlightDemo user={user}/>
+          <CardSpotlightDemo user={user} />
         ))}
       </div>
       {users.length === 0 && (

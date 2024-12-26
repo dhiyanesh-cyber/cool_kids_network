@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { FaUser, FaUsers, FaSignInAlt, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
-import Signup from './components/Signup';
-import Login from './components/Login';
+import Signup from './components/auth/Signup';
+import Login from './components/auth/Login';
 import UserProfile from './components/UserProfile';
 import UserList from './components/UserList';
 import authService from './services/authService';
 import { NextUIProvider } from "@nextui-org/react";
 import RoleUpdater from './components/RoleUpdater';
+import Navbar from './components/nav/NavBar';
+import HomePage from './components/Homepage';
 
 
 function App() {
@@ -38,52 +40,10 @@ function App() {
     <NextUIProvider className='dark'>
       <Router>
         <div className="min-h-screen bg-dark-bg bg-opacity-90 text-dark-text flex flex-col">
-          <nav className="sticky top-0 z-50 bg-dark-card bg-opacity-70 backdrop-blur-lg text-white p-4 shadow-md border-b border-dark-border">
-            <div className="container mx-auto flex justify-between items-center">
-              <Link to="/" id='brand' className="text-2xl font-bold flex items-center">
-                Cool Kids Network
-              </Link>
-              <ul className="flex space-x-4 items-center">
-                {!user ? (
-                  <>
-                    <li>
-                      <Link to="/signup" className="flex items-center hover:bg-dark-hover px-3 py-2 rounded transition">
-                        <FaUserPlus className="mr-2" /> Signup
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/login" className="flex items-center hover:bg-dark-hover px-3 py-2 rounded transition">
-                        <FaSignInAlt className="mr-2" /> Login
-                      </Link>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li>
-                      <Link to="/profile" className="flex items-center hover:bg-dark-hover px-3 py-2 rounded transition">
-                        <FaUser className="mr-2" /> Profile
-                      </Link>
-                    </li>
-                    {(user.role === 'Cooler Kid' || user.role === 'Coolest Kid') && (
-                      <li>
-                        <Link to="/users" className="flex items-center hover:bg-dark-hover px-3 py-2 rounded transition">
-                          <FaUsers className="mr-2" /> User List
-                        </Link>
-                      </li>
-                    )}
-                    <li>
-                      <button onClick={handleLogout} className="flex items-center hover:bg-red-600 px-3 py-2 rounded transition">
-                        <FaSignOutAlt className="mr-2" /> Logout
-                      </button>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </div>
-          </nav>
+          <Navbar user={user} onLogout={handleLogout} />
           <div className="container mx-auto min-h-svh flex-grow p-6">
             <Routes>
-              <Route path="/" element={user ? <Navigate to="/profile" /> : <Navigate to="/login" />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login onLogin={() => setUser(authService.getCurrentUser())} />} />
               <Route path="/profile" element={user ? <UserProfile /> : <Navigate to="/login" />} />
@@ -91,7 +51,7 @@ function App() {
               <Route
                 path="/users"
                 element={
-                  user && (user.role === 'Cooler Kid' || user.role === 'Coolest Kid') ? (
+                  user && (user.role === 'Cooler Kid' || user.role === 'Coolest Kid' || authService.isMaintainer()) ? (
                     <UserList />
                   ) : (
                     <Navigate to="/profile" />

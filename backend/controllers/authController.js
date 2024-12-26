@@ -1,6 +1,6 @@
 // backend/controllers/authController.js
 import User from '../models/User.js';
-import generateCharacter from '../utils/generateCharacter.js';
+import Maintainer from '../models/Maintainer.js';
 
 export const signup = async (req, res) => {
   try {
@@ -44,14 +44,25 @@ export const login = async (req, res) => {
   try {
     const { email } = req.body;
 
-    
+    // Check if the email belongs to a maintainer
+    const maintainer = await Maintainer.findOne({ email });
+    if (maintainer) {
+      return res.status(200).json({
+        message: 'Login successful',
+        user: {
+          email: maintainer.email,
+          isMaintainer: true
+        }
+      });
+    }
 
+    // If not a maintainer, check the User collection
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // For this proof of concept, we're not using passwords
+    // Respond with user details and isMaintainer flag
     res.status(200).json({
       message: 'Login successful',
       user: {
@@ -59,7 +70,8 @@ export const login = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         country: user.country,
-        role: user.role
+        role: user.role,
+        isMaintainer: false
       }
     });
   } catch (error) {
