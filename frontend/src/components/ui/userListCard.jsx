@@ -18,7 +18,7 @@ export function CardSpotlightDemo(props) {
 
     return (
         <div className="relative" >
-            <Card className={`relative rounded-2xl px-6 py-3 transform transition hover:scale-100 ${applyGradients ? (isCoolestKid ? 'coolest-gradient-shadow' : 'cooler-gradient-shadow') : 'bg-opacity-80'}`}>
+            <Card className={`relative rounded-2xl px-6 py-3 transform transition hover:scale-100 ${isCurrentCoolestKid || isCurrentMaintainer ? (isCoolestKid ? 'coolest-gradient-shadow' : user.role === 'Cooler Kid' && 'cooler-gradient-shadow') : 'bg-opacity-80'}`}>
                 <CardBody>
                     <div className="flex items-center mb-4">
                         <div className="w-16 h-16 bg-dark-bg rounded-full flex items-center justify-center text-dark-text text-2xl mr-4" >
