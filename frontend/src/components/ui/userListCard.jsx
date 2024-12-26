@@ -9,6 +9,7 @@ export function CardSpotlightDemo(props) {
     // Determine if the user is the "Coolest Kid"
     const isCoolestKid = user.role === 'Coolest Kid';
     const isCurrentCoolestKid = currentUser.role === 'Coolest Kid';
+    const isCurrentMaintainer = authService.isMaintainer();
 
     return (
         <div className="relative">
@@ -22,7 +23,7 @@ export function CardSpotlightDemo(props) {
                             <h3 className="text-xl font-bold text-dark-text">
                                 {user.firstName} {user.lastName}
                             </h3>
-                            {isCurrentCoolestKid && (
+                            {isCurrentCoolestKid || isCurrentMaintainer && (
                                 <p className="text-sm">{user.email}</p>
                             )}
                         </div>
@@ -32,7 +33,7 @@ export function CardSpotlightDemo(props) {
                             <FaGlobe className="mr-2 text-dark-text" />
                             <span className="font-medium text-dark-text">{user.country}</span>
                         </div>
-                        {isCurrentCoolestKid && (
+                        {isCurrentCoolestKid || isCurrentMaintainer && (
                             <div className="flex items-center">
                                 <FaTag className="mr-2 text-dark-text" />
                                 <span className="font-medium">{user.role}</span>
