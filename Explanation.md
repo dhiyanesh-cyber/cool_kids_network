@@ -202,3 +202,9 @@ cool_kids_network/
     ```
 
 ---
+
+## Viewing the Website
+
+After building the frontend and running the backend, visit the website by going to [http://localhost:5000](http://localhost:5000) in your browser.
+
+---
