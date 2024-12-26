@@ -7,7 +7,6 @@ import { CanvasRevealEffect } from './ui/canvas-reveal-effect';
 import { CardSpotlight } from './ui/card-spotlight';
 import { CardSpotlightDemo } from './ui/userListCard';
 
-
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
@@ -43,20 +42,15 @@ const UserList = () => {
         Cool Kids Network Users
       </h2>
       {error && (
-        <p className="text-red-500 text-center bg-red-800 p-2 rounded mb-4">
-          {error}
-        </p>
+        <p className="text-red-500 text-center bg-red-800 p-2 rounded mb-4">{error}</p>
       )}
-
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {users.map((user, index) => (
           <CardSpotlightDemo user={user} />
         ))}
       </div>
-      {users.length === 0 && (
-        <p className="text-center text-dark-text">No users found</p>
-      )}
+      {users.length === 0 && <p className="text-center text-dark-text">No users found</p>}
     </div>
   );
 };

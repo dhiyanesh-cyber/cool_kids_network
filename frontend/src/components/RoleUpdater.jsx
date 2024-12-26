@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../services/apiClient';
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from '@nextui-org/react';
 import authService from '../services/authService'; // Assuming authService is used to get the current maintainer
 
 const RoleUpdater = () => {
@@ -56,17 +56,23 @@ const RoleUpdater = () => {
       const response = await apiClient.put('/admin/assign-role', payload);
       setMessage(response.data.message || 'Role updated successfully!');
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred while updating the role.');
+      setError(
+        err.response?.data?.message || 'An error occurred while updating the role.'
+      );
     }
   };
 
   if (!isAuthorized) {
     return (
-      <div className='min-h-[calc(100vh-200px)] flex items-center justify-center'>
-        <Card className='w-[450px] px-6 py-3'>
+      <div className="min-h-[calc(100vh-200px)] flex items-center justify-center">
+        <Card className="w-[450px] px-6 py-3">
           <CardBody>
-            <h2 className="text-2xl font-bold text-center text-white mb-4">Not Authorized</h2>
-            <p className="text-center text-red-200 bg-red-800/70 p-2 rounded-lg">You do not have permission to access this page.</p>
+            <h2 className="text-2xl font-bold text-center text-white mb-4">
+              Not Authorized
+            </h2>
+            <p className="text-center text-red-200 bg-red-800/70 p-2 rounded-lg">
+              You do not have permission to access this page.
+            </p>
           </CardBody>
         </Card>
       </div>
@@ -74,10 +80,12 @@ const RoleUpdater = () => {
   }
 
   return (
-    <div className='min-h-[calc(100vh-200px)] flex items-center justify-center'>
-      <Card className='w-[400px] px-6 py-3'>
+    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center">
+      <Card className="w-[400px] px-6 py-3">
         <CardBody>
-          <h2 className="text-2xl font-bold text-center text-white mb-4">Update User Role</h2>
+          <h2 className="text-2xl font-bold text-center text-white mb-4">
+            Update User Role
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {!useName ? (
               <div>
@@ -141,8 +149,16 @@ const RoleUpdater = () => {
               Update Role
             </button>
           </form>
-          {message && <p className="mt-4 text-green-200 text-center bg-green-800 p-2 rounded flex items-center justify-center">{message}</p>}
-          {error && <p className="mt-4 text-red-200 text-center bg-red-800 p-2 rounded">{error}</p>}
+          {message && (
+            <p className="mt-4 text-green-200 text-center bg-green-800 p-2 rounded flex items-center justify-center">
+              {message}
+            </p>
+          )}
+          {error && (
+            <p className="mt-4 text-red-200 text-center bg-red-800 p-2 rounded">
+              {error}
+            </p>
+          )}
         </CardBody>
       </Card>
     </div>

@@ -55,7 +55,9 @@ const UserProfile = () => {
               <FaUser className="mr-3 text-dark-text" />
               <div>
                 <p className="text-sm text-dark-text">Full Name</p>
-                <p className="font-semibold text-dark-text">{profile.firstName} {profile.lastName}</p>
+                <p className="font-semibold text-dark-text">
+                  {profile.firstName} {profile.lastName}
+                </p>
               </div>
             </div>
             <div className="flex items-center bg-dark-bg p-3 rounded-lg">
